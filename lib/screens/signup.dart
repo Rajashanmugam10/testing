@@ -20,6 +20,9 @@ class Signup extends StatefulWidget {
 class _SignupState extends State<Signup> {
   TextEditingController useremail = TextEditingController();
   TextEditingController userpassword = TextEditingController();
+  TextEditingController name = TextEditingController();
+  TextEditingController username = TextEditingController();
+  TextEditingController bio = TextEditingController();
   String? errormessage = '';
   final formkey = GlobalKey<FormState>();
   Uint8List? _image;
@@ -33,8 +36,13 @@ class _SignupState extends State<Signup> {
   Future<void> createuserwithemailandpassword() async {
     try {
       Auth().createuserwithemailandpassword(
-          email: useremail.text, password: userpassword.text);
-          print(useremail.text);
+        file: _image!,
+          name: name.text,
+          username: username.text,
+          bio: bio.text,
+          email: useremail.text,
+          password: userpassword.text);
+      print(useremail.text);
     } on FirebaseAuthException catch (e) {
       setState(() {
         errormessage = e.message;
@@ -88,7 +96,15 @@ class _SignupState extends State<Signup> {
                   children: [
                     CupertinoTextFormFieldRow(
                       placeholder: 'name',
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       prefix: const Text('name'),
+                      controller: name,
+                      validator: (name) {
+                        if (name == null || name.isEmpty) {
+                          return 'name is empty';
+                        }
+                        return null;
+                      },
                       textInputAction: TextInputAction.next,
                     ),
                     CupertinoTextFormFieldRow(
@@ -114,9 +130,16 @@ class _SignupState extends State<Signup> {
                         style: TextStyle(color: Colors.grey),
                       ),
                       child: CupertinoTextFormFieldRow(
-                        placeholder: 'username',
-                        textInputAction: TextInputAction.next,
-                      ),
+                          placeholder: 'username',
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          textInputAction: TextInputAction.next,
+                          controller: username,
+                          validator: (username) {
+                            if (username == null || username.isEmpty) {
+                              return 'username is empty';
+                            }
+                            return null;
+                          }),
                     ),
                     CupertinoTextFormFieldRow(
                       placeholder: 'password',
@@ -135,6 +158,14 @@ class _SignupState extends State<Signup> {
                     ),
                     CupertinoTextFormFieldRow(
                       placeholder: 'bio',
+                      controller: bio,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (bio) {
+                        if (bio == null || bio.isEmpty) {
+                          return 'password empty';
+                        }
+                        return null;
+                      },
                       textInputAction: TextInputAction.done,
                     ),
                   ]),
@@ -144,12 +175,11 @@ class _SignupState extends State<Signup> {
                     borderRadius: const BorderRadius.all(Radius.circular(20.0)),
                     child: const Text('create account'),
                     onPressed: () async {
-                     
                       final form = formkey.currentState;
                       if (form!.validate()) {
-                          createuserwithemailandpassword();
-                         Fluttertoast.showToast(
-                            msg: errormessage??"no error",
+                        createuserwithemailandpassword();
+                        Fluttertoast.showToast(
+                            msg: "account created",
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.TOP,
                             timeInSecForIosWeb: 1,

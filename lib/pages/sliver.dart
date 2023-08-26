@@ -14,10 +14,7 @@ class SliverNavBarExample extends StatelessWidget {
         slivers: <Widget>[
           const CupertinoSliverNavigationBar(
             leading: Icon(CupertinoIcons.person_2),
-            // This title is visible in both collapsed and expanded states.
-            // When the "middle" parameter is omitted, the widget provided
-            // in the "largeTitle" parameter is used instead in the collapsed state.
-            largeTitle: Text('Contacts'),
+                       largeTitle: Text('Contacts'),
             trailing: Icon(CupertinoIcons.add_circled),
           ),
           // This widget fills the remaining space in the viewport.
